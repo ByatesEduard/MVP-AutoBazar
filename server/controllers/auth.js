@@ -105,3 +105,23 @@ export const getMe = async (req, res) => {
     res.status(500).json({ message: 'Нет доступа пользивателя' });
   }
 };
+
+// export const getUserById = async (req, res) => {
+//   try {
+//     const userId = req.params.userId; // Отримуємо ID користувача з параметрів запиту
+
+//     const user = await User.findById(userId); // Знаходимо користувача за ID
+
+//     if (!user) {
+//       return res.status(404).json({ message: 'Користувач не знайдений' }); // Якщо користувач не знайдений, повертаємо помилку 404
+//     }
+
+//     // Можна повернути лише певні поля, якщо не хочете відправляти все
+//     const { password, ...userData } = user.toObject(); // Exclude password
+//     res.json(userData); // Повертаємо дані користувача (без пароля)
+
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Помилка при отриманні користувача', error: error.message }); // Повертаємо помилку 500
+//   }
+// };

@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import {register, login, getMe} from '../controllers/auth.js'
-import { chechAuth } from '../middleware/checkAuth.js'
+import { checkAuth } from '../middleware/checkAuth.js'
 
 const router = new Router()
 
@@ -13,7 +13,7 @@ router.post('/register', register)
 router.post('/login', login)
 
 // http://localhost:3002/api/auth/me
-router.get('/me', chechAuth, getMe)
+router.get('/me', checkAuth, getMe)
 
 
 export default router

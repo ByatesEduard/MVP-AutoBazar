@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../utils/axios';
+import axios from '../utils/fixed_axios';
 import { PostItem } from '../components/Postitem';
 
 export const PostsPage = () => {
@@ -23,7 +23,7 @@ export const PostsPage = () => {
       {posts.length > 0 ? (
         posts.map((post, idx) => <PostItem post={post} key={idx} />)
       ) : (
-        <p className='text-center text-white'>Постов пока нет</p>
+        <p className='text-center text-black'>Постов пока нет</p>
       )}
     </div>
   );

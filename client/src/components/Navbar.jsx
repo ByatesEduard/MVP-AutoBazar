@@ -8,7 +8,8 @@ export const Navbar = () => {
   const dispatch = useDispatch();
   const [showProfile, setShowProfile] = useState(false);
   const profileRef = useRef(null);
-
+  const { user } = useSelector((state) => state.post);
+  const username = user?.username || 'Гість';
   const activeStyles = {
     color: 'black',
   };
@@ -89,7 +90,7 @@ export const Navbar = () => {
                     className="w-12 h-12 rounded-full"
                   />
                   <div>
-                    <p className="font-bold">Ім'я Користувача</p>
+                    <p className="font-bold text-left">{username}</p>
                     <p className="text-sm text-green-500">Підписка: Активна</p>
                   </div>
                 </div>

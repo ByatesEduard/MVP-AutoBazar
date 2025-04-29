@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import { checkAuth } from '../middleware/checkAuth.js'
-import { createPost, getAll, getById, getMyPosts, removePost, } from '../controllers/posts.js'
+import { createPost, getAll, getById, getMyPosts, removePost, getPostsByUser } from '../controllers/posts.js'
 
 const router = new Router()
 
@@ -18,7 +18,7 @@ router.get('/user/me', checkAuth, getMyPosts)
 
 // get posts by user id
 // http://localhost:3002/api/posts/user/:userId
-// router.get('/user/:userId', getPostsByUser); 
+ router.get('/user/:userId', getPostsByUser); 
 
 
 // get by id

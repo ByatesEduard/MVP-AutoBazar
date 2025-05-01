@@ -6,7 +6,7 @@ import fileUpload from 'express-fileupload'
 
 import authRoute from './routes/auth.js'
 import postRoute from './routes/posts.js'
-import userRoutes from './routes/users.js'
+// import userRoutes from './routes/users.js'
 
 dotenv.config()
 
@@ -28,7 +28,7 @@ app.use(express.static('uploads')) // Віддає файли з папки uplo
 // Routes
 app.use('/api/auth', authRoute)
 app.use('/api/posts', postRoute)
-app.use('/api/users', userRoutes)
+// app.use('/api/users', userRoutes)
 
 // MongoDB + запуск сервера
 async function start() {

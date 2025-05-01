@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUser, getAllposts } from '../redux/features/auth/post/fixed_postSlice';
+import { getAllposts } from '../redux/features/auth/post/fixed_postSlice';
 
 export const ProfilePage = () => {
   const dispatch = useDispatch();
   const { user, posts } = useSelector((state) => state.post);
 
-  useEffect(() => {
-    const userId = '67e010291ede3c2f01949d32'; // Замінити на актуальний ID
-    dispatch(fetchUser(userId));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   const userId = '67e010291ede3c2f01949d32'; 
+  //   dispatch(fetchUser(userId));
+  // }, [dispatch]);
 
   useEffect(() => {
     if (user?._id) {

@@ -90,7 +90,7 @@ export const Navbar = () => {
                     className="w-12 h-12 rounded-full"
                   />
                   <div>
-                    <p className="font-bold text-left">{username}</p>
+                    <p className="font-bold text-left text-black">{username}</p>
                     <p className="text-sm text-green-500">Підписка: Активна</p>
                   </div>
                 </div>

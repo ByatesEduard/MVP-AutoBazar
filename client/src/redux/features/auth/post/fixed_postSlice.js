@@ -85,7 +85,7 @@ export const postSlice = createSlice({
       .addCase(createPost.rejected, (state) => {
         state.loading = false;
       })
-      
+
       // Отримання всіх постів
       .addCase(getAllposts.pending, (state) => {
         state.loading = true;
@@ -98,7 +98,7 @@ export const postSlice = createSlice({
       .addCase(getAllposts.rejected, (state) => {
         state.loading = false;
       })
-      
+
       // Видалення поста
       .addCase(removePost.pending, (state) => {
         state.loading = true;

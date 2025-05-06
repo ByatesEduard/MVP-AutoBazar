@@ -53,7 +53,7 @@ export const LoginPage = () => {
 
       <div className='flex gap-8 justify-center mt-4'>
         <button type='submit' onClick={handleSubmit} className='flex justify-center items-center text-xs bg-gray-600 text-white rounded-sm py-w px-4'>Войти</button>
-        <Link to='/register' className='flex justify-center items-center text-xs text-white'>Нет аккаунта ?</Link>
+        <Link to='/register' className='flex justify-center items-center text-xs text-black'>Нет аккаунта ?</Link>
       </div>
 
     </form>

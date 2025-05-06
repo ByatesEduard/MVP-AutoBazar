@@ -1,11 +1,11 @@
 import { Layout } from './components/Layout.jsx'
 import { Routes, Route } from 'react-router-dom'
 
-import { MainPage } from './pages/MainPage.jsx'
+import  MainPage  from './pages/MainPage.jsx'
 import { PostsPage } from './pages/PostsPage'
 import { PostPage } from './pages/PostPage'
 import { SellPage} from './pages/SellPage.jsx'
-import { AddPostPage } from './pages/fixed_AddPostPage'
+import  AddPostPage  from './pages/fixed_AddPostPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { LoginPage } from './pages/LoginPage'
 import { ProfilePage} from './pages/ProfilePage.jsx'

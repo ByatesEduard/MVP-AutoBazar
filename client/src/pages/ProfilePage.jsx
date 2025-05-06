@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllposts } from '../redux/features/auth/post/fixed_postSlice';
+import { getMe } from '../redux/features/auth/authSlice';
 
 export const ProfilePage = () => {
   const dispatch = useDispatch();
-  const { user, posts } = useSelector((state) => state.post);
+  const { user } = useSelector((state) => state.auth);
+  const { posts } = useSelector((state) => state.post);
 
-  // useEffect(() => {
-  //   const userId = '67e010291ede3c2f01949d32'; 
-  //   dispatch(fetchUser(userId));
-  // }, [dispatch]);
-
+  useEffect(() => {
+    dispatch(getMe());
+  }, [dispatch]);
+  
   useEffect(() => {
     if (user?._id) {
       dispatch(getAllposts({ user: user._id }));
@@ -21,11 +22,14 @@ export const ProfilePage = () => {
   const brandStats = {};
   let totalPrice = 0;
 
+  const exchangeRate = 40; // курс 1 USD = 40 грн
   posts.forEach((post) => {
     const brand = post.brand || 'Невідомо';
     brandStats[brand] = (brandStats[brand] || 0) + 1;
-    totalPrice += post.price;
+    totalPrice += (Number(post.price) || 0) * exchangeRate; // конвертація в гривні
   });
+
+  const totalUSD = totalPrice / exchangeRate; // для відображення суми в USD
 
   return (
     <div className="max-w-6xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
@@ -66,18 +70,28 @@ export const ProfilePage = () => {
                   />
                   <div>
                     <div className="flex items-center gap-4">
-                      <p className="text-sm text-black">
-                        Номер: {post.numberPlate}
-                      </p>
+                      <div className="bg-white border border-black rounded inline-flex items-center font-semibold text-blue-900 text-lg w-fit">
+                        <div className="flex items-center">
+                          <div className="flex flex-col items-center justify-center bg-blue-600 text-white px-1 py-0.5 rounded-l-sm mr-1 w-5 h-5">
+                            <div className="text-[8px] font-bold">UA</div>
+                            <div className="w-full h-0.5 bg-yellow-400"></div>
+                          </div>
+                          <span className="text-xs font-bold px-1 text-black">
+                            {post.numberPlate || 'Номерний знак не вказано'}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                     <h3 className="font-bold text-lg">{post.title}</h3>
                     <p className="text-sm text-gray-500">
-                      {post.brand} • {post.year}
+                      {post.model} • {post.year}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-lg font-bold text-green-600">{post.price} ₴</p>
+                  <p className="text-lg font-bold text-green-600">
+                    {(Number(post.price) * exchangeRate).toLocaleString('uk-UA')} ₴
+                  </p>
                   <p
                     className={`text-sm ${
                       post.isSold ? 'text-red-500' : 'text-gray-400'
@@ -97,7 +111,12 @@ export const ProfilePage = () => {
         <div className="border p-4 rounded-lg bg-gray-50 shadow-sm h-fit">
           <h3 className="text-lg font-bold mb-2">Статистика</h3>
           <p className="mb-2 font-semibold">Загальна кількість: {posts.length}</p>
-          <p className="mb-2 font-semibold text-green-600">Сума: {totalPrice} ₴</p>
+          <p className="mb-1 font-semibold text-green-600">
+            Сума: {totalPrice.toLocaleString('uk-UA')} ₴
+          </p>
+          <p className="text-sm text-gray-600 mb-2">
+            ≈ {(totalUSD).toFixed(2).toLocaleString('en-US')} $
+          </p>
           <div className="mt-2">
             <p className="font-semibold mb-1">Кількість по брендах:</p>
             <ul className="list-disc list-inside text-sm text-gray-700">

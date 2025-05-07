@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-  baseURL: process.env.FRONTEND-URL,
+  baseURL: process.env.FRONTEND_URL,
 });
 
 instance.interceptors.request.use((config) => {

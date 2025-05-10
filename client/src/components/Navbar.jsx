@@ -29,7 +29,7 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <div className="relative bg-white shadow-md py-6 px-8">
+    <div className="relative bg-white shadow-md py-6 px-8"> 
   <div className="flex justify-center">
     {isAuth && (
       <ul className="flex gap-6">

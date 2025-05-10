@@ -9,7 +9,7 @@ const PostSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     views: { type: Number, default: 0 },
     author: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+    // comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     fuel: { type: String, required: true },
     drive: {type: String, required: true },
     engine: { type: String, required: true },

@@ -4,48 +4,59 @@ import axios from 'axios';
 
 const AddPostPage = () => {
   const navigate = useNavigate();
-  const [brand, setBrand] = useState('');
-  const [model, setModel] = useState('');
-  const [year, setYear] = useState('');
+  const [title, setTitle] = useState('');
+  const [text, setText] = useState('');
+  const [image, setImage] = useState(null);
   const [price, setPrice] = useState('');
   const [mileage, setMileage] = useState('');
-  const [fuel, setFuel] = useState('');
-  const [description, setDescription] = useState('');
-  const [image, setImage] = useState('');
-
-  const years = Array.from({ length: 2025 - 1990 + 1 }, (_, i) => (1990 + i).toString());
-  const fuels = ['Бензин', 'Дизель', 'Газ', 'Електро', 'Гібрид'];
+  const [transmission, setTransmission] = useState('automatic');
+  const [engine, setEngine] = useState('');
+  const [fuel, setFuel] = useState('gasoline');
+  const [drive, setDrive] = useState('');
+  const [model, setModel] = useState('');
+  const [numberPlate, setNumberPlate] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!brand || !model || !year || !price || !mileage || !fuel || !description || !image) {
-      alert("Будь ласка, заповніть усі поля");
+    if (!title || !text || !price || !mileage || !image) {
+      alert('Будь ласка, заповніть усі обовʼязкові поля');
       return;
     }
 
-    if (isNaN(Number(price)) || isNaN(Number(mileage)) || isNaN(Number(year))) {
-      alert("Ціна, пробіг та рік мають бути числовими значеннями");
+    if (isNaN(Number(price)) || isNaN(Number(mileage))) {
+      alert("Ціна та пробіг мають бути числовими");
       return;
     }
-
-    const newPost = {
-      brand,
-      model,
-      year: Number(year),
-      price: Number(price),
-      mileage: Number(mileage),
-      fuel,
-      description,
-      image
-    };
 
     try {
-      await axios.post('http://localhost:3000/posts', newPost);
-      navigate('/');
+      const data = new FormData();
+      data.append('title', title);
+      data.append('text', text);
+      data.append('price', price.toString());
+      data.append('mileage', mileage.toString());
+      data.append('transmission', transmission);
+      data.append('engine', engine);
+      data.append('fuel', fuel);
+      data.append('drive', drive);
+      data.append('model', model);
+      data.append('numberPlate', numberPlate);
+      if (image) data.append('image', image);
+
+      const token = localStorage.getItem('token');
+
+      const res = await axios.post('/posts', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log('Post created:', res.data);
+      navigate('/sell');
     } catch (error) {
-      console.error("Помилка при додаванні оголошення:", error);
-      alert("Сталася помилка при відправленні даних");
+      console.error('Помилка створення поста:', error);
+      alert('Сталася помилка при відправленні даних');
     }
   };
 
@@ -53,81 +64,67 @@ const AddPostPage = () => {
     <form onSubmit={handleSubmit} className="space-y-4 max-w-xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold text-center mb-4">Додати оголошення</h2>
 
-      <input placeholder="Марка" value={brand} onChange={(e) => setBrand(e.target.value)} className="w-full border p-2 rounded" />
-      <input placeholder="Модель" value={model} onChange={(e) => setModel(e.target.value)} className="w-full border p-2 rounded" />
-
-      <select value={year} onChange={(e) => setYear(e.target.value)} className="w-full border p-2 rounded">
-        <option value="">Рік випуску</option>
-        {years.map((y) => (
-          <option key={y} value={y}>{y}</option>
-        ))}
-      </select>
-
+      <input placeholder="Марка" value={title} onChange={(e) => setTitle(e.target.value)} className="w-full border p-2 rounded" />
+      <input placeholder="Опис" value={text} onChange={(e) => setText(e.target.value)} className="w-full border p-2 rounded" />
+      <input type="text" placeholder="Модель" value={model} onChange={(e) => setModel(e.target.value)} className="w-full border p-2 rounded" />
+      <input type="text" placeholder="Номерний знак" value={numberPlate} onChange={(e) => setNumberPlate(e.target.value)} className="w-full border p-2 rounded" />
       <input type="number" placeholder="Ціна" value={price} onChange={(e) => setPrice(e.target.value)} className="w-full border p-2 rounded" />
       <input type="number" placeholder="Пробіг" value={mileage} onChange={(e) => setMileage(e.target.value)} className="w-full border p-2 rounded" />
 
-      <select value={fuel} onChange={(e) => setFuel(e.target.value)} className="w-full border p-2 rounded">
-        <option value="">Тип пального</option>
-        {fuels.map((f) => (
-          <option key={f} value={f}>{f}</option>
-        ))}
+      <select value={transmission} onChange={(e) => setTransmission(e.target.value)} className="w-full border p-2 rounded">
+        <option value="automatic">Автомат</option>
+        <option value="manual">Механіка</option>
       </select>
 
-      <textarea placeholder="Опис" value={description} onChange={(e) => setDescription(e.target.value)} className="w-full border p-2 rounded" />
-      <div className="space-y-4">
-  <div className="flex flex-col">
-    <input 
-      placeholder="URL зображення" 
-      value={image} 
-      onChange={(e) => setImage(e.target.value)} 
-      className="w-full border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition ease-in-out duration-200"
-    />
-    <span className="text-xs text-gray-500 mt-1">Введіть URL зображення для попереднього перегляду</span>
-  </div>
+      <select value={fuel} onChange={(e) => setFuel(e.target.value)} className="w-full border p-2 rounded">
+        <option value="gasoline">Бензин</option>
+        <option value="diesel">Дизель</option>
+        <option value="gaz/gasoline">Газ/Бензин</option>
+        <option value="electro">Електро</option>
+      </select>
 
-  <div className="flex flex-col items-center">
-    <label 
-      className="text-white py-3 px-6 bg-blue-600 rounded-lg cursor-pointer hover:bg-blue-700 transition duration-200"
-      htmlFor="image-upload"
-    >
-      Прикріпити зображення:
-    </label>
-    <input 
-      id="image-upload"
-      type="file"  
-      className="hidden" 
-      onChange={(e) => setImage(e.target.files[0])}
-    />
-    {image && (
-      <div className="mt-4">
-        <img 
-          src={URL.createObjectURL(image)} 
-          alt="preview" 
-          className="w-32 h-32 object-cover rounded-md border-2 border-gray-300" 
-        />
-      </div>
-    )}
-  </div>
-</div>
+      <select value={drive} onChange={(e) => setDrive(e.target.value)} className="w-full border p-2 rounded">
+        <option value="">Тип приводу</option>
+        <option value="FWD">FWD</option>
+        <option value="RWD">RWD</option>
+        <option value="AWD">AWD</option>
+      </select>
 
-      <div className='flex object-cover py-2'>
-        {image &&(
-          <img src={URL.createObjectURL(image)} alt={image.name} />
-        )}
-      </div>
+      <select value={engine} onChange={(e) => setEngine(e.target.value)} className="w-full border p-2 rounded">
+        <option value="">Обʼєм двигуна</option>
+        <option value="1.0l">1.0л</option>
+        <option value="1.6l">1.6л</option>
+        <option value="2.0l">2.0л</option>
+        <option value="2.5l">2.5л</option>
+        <option value="3.0l">3.0л</option>
+        <option value="3.5l">3.5л</option>
+        <option value="4.0l">4.0л</option>
+        <option value="4.4l">4.4л</option>
+        <option value="4.7l">4.7л</option>
+        <option value="5.0l">5.0л</option>
+        <option value="5.5l">5.5л</option>
+        <option value="6.0l">6.0л</option>
+      </select>
 
-      <div className="flex justify-between">
-        <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-md">
-          Додати
-        </button>
-        <button
-          type="button"
-          onClick={() => navigate('/')}
-          className="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-6 rounded-md"
-        >
-          Скасувати
-        </button>
-      </div>
+      <input
+        type="file"
+        onChange={(e) => setImage(e.target.files[0])}
+        className="w-full border p-2 rounded"
+      />
+
+      {image && (
+        <div className="mt-2">
+          <img
+            src={URL.createObjectURL(image)}
+            alt="preview"
+            className="w-32 h-32 object-cover rounded-md border-2 border-gray-300"
+          />
+        </div>
+      )}
+
+      <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition">
+        Створити оголошення
+      </button>
     </form>
   );
 };

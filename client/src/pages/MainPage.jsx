@@ -14,6 +14,11 @@ const MainPage = () => {
     window.location.href = VIYSKOVYI_ZBIR_URL;
   };
 
+  const icons = {};
+     for (let i = 1; i <= 35; i++) {
+       icons[`${i}`] = require(`../icon/${i}.jpg`);
+     }
+
   const handleSubscribe = async () => {
     try {
       const response = await fetch('http://localhost:3001/api/create-payment', {
@@ -57,6 +62,8 @@ const MainPage = () => {
   };
 
   return (
+  
+
     <div className="bg-gray-100 font-sans min-h-screen p-4">
       <div className="container mx-auto">
         <div className="flex justify-end mb-4">
@@ -91,7 +98,19 @@ const MainPage = () => {
               </div>
             </div>
           </div>
+          
         )}
+
+        <div className=' bg-white p-6 rounded-lg shadow-md mt-10 flex gap-8'>
+                <div className='font-bold text-black text-xl '>
+                    Марки автомобілів:
+                    <div className='flex flex-wrap gap-2'>
+                        {Object.keys(icons).map((key) => (
+                            <img key={key} src={icons[key]} alt={`Icon ${key}`} className="w-16 h-16 object-contain" />
+                        ))}
+                    </div>
+                </div>
+            </div>
       </div>
     </div>
   );

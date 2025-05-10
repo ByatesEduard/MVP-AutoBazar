@@ -14,6 +14,7 @@ import { ToastContainer } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { getMe} from './redux/features/auth/authSlice.js'
+import AddPostDetails from './pages/AddPostDetail.jsx';
 
 function App() {
   const dispatch = useDispatch()
@@ -30,6 +31,7 @@ function App() {
         <Route path="post/:id" element={<PostPage />} />  {/* Use exact parameter */}
         <Route path="post/:id/edit" element={<EditPostPage />} />  {/* Edit post route */}
         <Route path="new" element={<AddPostPage />} />
+        <Route path="/details" element={<AddPostDetails />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="profile" element={<ProfilePage/>} />

@@ -31,24 +31,6 @@ app.use('/api/auth', authRoute);
 app.use('/api/posts', postRoute);
 
 // LiqPay API route
-const liqpay = new LiqPay(process.env.LIQPAY_PUBLIC, process.env.LIQPAY_PRIVATE);
-
-app.post('/api/create-payment', (req, res) => {
-  const { amount, user } = req.body;
-
-  const html = liqpay.cnb_form({
-    action: "pay",
-    amount,
-    currency: "UAH",
-    description: `Підписка для ${user}`,
-    order_id: `sub-${Date.now()}`,
-    version: "3",
-    result_url: "http://localhost:3000/success",
-    server_url: "http://your-server.com/api/payment-callback"
-  });
-
-  res.send({ html });
-});
 
 // MongoDB + запуск сервера
 async function start() {

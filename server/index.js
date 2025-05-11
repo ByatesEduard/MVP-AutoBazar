@@ -5,6 +5,7 @@ import cors from 'cors';
 import fileUpload from 'express-fileupload';
 import authRoute from './routes/auth.js';
 import postRoute from './routes/posts.js';
+import chatRoutes from './routes/chat.js';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
@@ -29,6 +30,7 @@ app.use(express.static('uploads'));
 // Routes
 app.use('/api/auth', authRoute);
 app.use('/api/posts', postRoute);
+app.use('/api/chat', chatRoutes);
 
 // LiqPay API route
 

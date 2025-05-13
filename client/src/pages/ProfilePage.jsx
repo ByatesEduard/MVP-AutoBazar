@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllposts } from '../redux/features/auth/post/fixed_postSlice';
 import { getMe } from '../redux/features/auth/authSlice';
+import { Link } from 'react-router-dom'; // 🔹 Додано для навігації
 
 export const ProfilePage = () => {
   const dispatch = useDispatch();
@@ -11,25 +12,24 @@ export const ProfilePage = () => {
   useEffect(() => {
     dispatch(getMe());
   }, [dispatch]);
-  
+
   useEffect(() => {
     if (user?._id) {
       dispatch(getAllposts({ user: user._id }));
     }
   }, [dispatch, user?._id]);
 
-  // --- Обчислення статистики ---
   const brandStats = {};
   let totalPrice = 0;
 
-  const exchangeRate = 40; // курс 1 USD = 40 грн
+  const exchangeRate = 40;
   posts.forEach((post) => {
     const brand = post.brand || 'Невідомо';
     brandStats[brand] = (brandStats[brand] || 0) + 1;
-    totalPrice += (Number(post.price) || 0) * exchangeRate; // конвертація в гривні
+    totalPrice += (Number(post.price) || 0) * exchangeRate;
   });
 
-  const totalUSD = totalPrice / exchangeRate; // для відображення суми в USD
+  const totalUSD = totalPrice / exchangeRate;
 
   return (
     <div className="max-w-6xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
@@ -48,6 +48,13 @@ export const ProfilePage = () => {
           <p className="text-sm text-green-600">
             Підписка: {user?.subscription ? 'Активна' : 'Немає'}
           </p>
+          {/* 🔹 Кнопка переходу до чату */}
+          <Link
+            to="/chat"
+            className="inline-block mt-2 px-4 py-2 bg-blue-600 text-white text-sm rounded hover:bg-blue-700 transition"
+          >
+            Перейти до чату
+          </Link>
         </div>
       </div>
 

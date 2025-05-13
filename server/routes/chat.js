@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { sendMessage } from '../controllers/chat.js';
+import { sendMessage, getMessages } from '../controllers/chat.js';
 
 const router = new Router();
 
-// httts://localhost:3001/api/chat
-router.post('/chat', sendMessage);
+router.post('/', sendMessage); // для надсилання повідомлення
+router.get('/', getMessages);  // для отримання всіх повідомлень
 
 export default router;

@@ -65,7 +65,7 @@ export const Navbar = () => {
             to="/new"
             className="flex items-center bg-green-600 text-s text-white rounded-xl hover:bg-green-700 px-4 py-2 font-bold"
           >
-            Додати пост
+              + Додати пост
           </NavLink>
         </li>
       </ul>

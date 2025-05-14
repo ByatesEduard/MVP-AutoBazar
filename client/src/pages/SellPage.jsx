@@ -3,10 +3,19 @@ import { PostItem } from '../components/Postitem';
 import { PopularPost } from '../components/PopularPost';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllposts } from '../redux/features/auth/post/fixed_postSlice';
+import image5 from '../img/logo.jpg';
+import header from '../img/header.jpg';
 
 export const SellPage = () => {
     const dispatch = useDispatch();
     const { posts, popularPost } = useSelector((state) => state.post);
+
+    const sideNews = [
+    { title: 'Які нові авто краще купували в Україні у квітні?', date: '06 травня 2025' },
+    { title: 'Автомобіль тижня: Volkswagen Tayron', date: '05 травня 2025' },
+    { title: 'Надійні авто віком від 3 до 10 років за даними ADAC', date: '01 травня 2025' },
+    { title: 'Автомобіль тижня: Chery Tiggo 4', date: '28 квітня 2025' }
+  ];
 
     const [filters, setFilters] = useState({
         priceMin: '',
@@ -154,7 +163,21 @@ export const SellPage = () => {
                                 <option value="2.0l">2.0</option>
                                 <option value="3.0l">3.0</option>
                             </select>
+                            
+                                      <div className="bg-white p-6">
+                                        <div className="flex">
+                                          <div className="w-1/3">
+                                            <img src={header} alt="header" className="rounded mb-4" />
+                                            <img src={image5} alt="Логотип" className="mb-2 w-full" />
+                                          </div>
+                                          <div className="w-2/3 pl-6">
+                                            <h2 className="text-2xl font-bold  mb-2">Щоб ви купували авто без сюрпризів</h2>
+                                            <p className=' text-s font-bold '>Ми робимо 32 перевірки: розшук, VIN, пробіг, історія, ДТП тощо.</p>
+                                          </div>
+                                        </div>
+                                      </div>
                         </>
+
                     )}
 
                     <button 
@@ -163,6 +186,14 @@ export const SellPage = () => {
                     >
                         {showAdvancedFilters ? 'Приховати' : 'Показати розширений пошук'}
                     </button>
+                    <div className="md:w-1/3 space-y-2">
+              {sideNews.map((item, index) => (
+                <div key={index} className="border-b pb-2 ">
+                  <a href="#" className="text-blue-700 hover:underline font-medium ">{item.title}</a>
+                  <p className="text-sm text-gray-500">{item.date}</p>
+                </div>
+              ))}
+            </div>
                 </div>
             </div>
 

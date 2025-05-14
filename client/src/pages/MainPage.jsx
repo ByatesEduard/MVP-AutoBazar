@@ -10,7 +10,7 @@ import suzuki from '../img/suzuki.webp';
 import toyota from '../img/toyota.webp';
 import start from '../img/start.webp';
 import maserati from '../img/maserati_special_offer_1_website.jpg';
-import pdrImage from '../img/test.webp';
+import pdrImage from '../img/test2.jpg';
 
 import { FaPhone, FaMapMarkerAlt, FaClock, FaDirections } from 'react-icons/fa';
 
@@ -50,6 +50,10 @@ const MainPage = () => {
       alert('Не вдалося ініціювати оплату');
     }
   };
+
+  const testMreo = () => (
+    window.location.href = 'https://pdr.infotech.gov.ua'
+  );
 
   const renderCatalog = () => (
     <div className="catalog-container bg-white rounded-lg p-4 shadow-md mt-6">
@@ -117,7 +121,9 @@ const MainPage = () => {
   <p className="font-semibold text-white drop-shadow">
     Як повинен діяти водій у цих ситуаціях? Перевір знання ПДР!
   </p>
-  <button className="mt-2 px-4 py-2 bg-blue-500 text-white rounded">
+  <button 
+   onClick={testMreo}
+   className="mt-2 px-4 py-2 bg-green-600 text-white rounded-full">
     Пройти тест
   </button>
 </div>
@@ -193,28 +199,9 @@ const MainPage = () => {
 </div>
 
 
-        {/* Каталог або стартова секція */}
-        {showCatalog ? renderCatalog() : (
-          <div className="bg-white p-6">
-            <div className="flex">
-              <div className="w-1/3">
-                <img src={header} alt="header" className="rounded mb-4" />
-                <img src={image5} alt="Логотип" className="mb-2 w-full" />
-              </div>
-              <div className="w-2/3 pl-6">
-                <h2 className="text-xl font-bold mb-2">Щоб ви купували авто без сюрпризів</h2>
-                <p>Ми робимо 32 перевірки: розшук, VIN, пробіг, історія, ДТП тощо.</p>
-                <img src={image11} alt="Інфо" className="my-4 w-700px" />
-                <img src={image10} alt="Інфо" className="w-500px" />
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Марки авто */}
         <div className='bg-white p-6 mt-10 flex gap-8'>
           <div className='font-bold text-black text-xl'>
-            Марки автомобілів:
             <div className='flex flex-wrap gap-2'>
               {Object.keys(icons).map((key) => (
                 <img key={key} src={icons[key]} alt={`Icon ${key}`} className="w-25 h-24 object-contain" />
@@ -222,6 +209,21 @@ const MainPage = () => {
             </div>
           </div>
         </div>
+
+          {showCatalog ? renderCatalog() : (
+          <div className="bg-white p-6">
+            <div className="flex">
+              <div className="w-1/3">
+                <img src={header} alt="header" className="rounded mb-4" />
+                <img src={image5} alt="Логотип" className="mb-2 w-full" />
+              </div>
+              <div className="w-2/3 pl-6">
+                <h2 className="text-2xl font-bold  mb-2">Щоб ви купували авто без сюрпризів</h2>
+                <p className=' text-s font-bold '>Ми робимо 32 перевірки: розшук, VIN, пробіг, історія, ДТП тощо.</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Футер */}
         <footer className="bg-white text-white pt-10 mt-10 rounded-lg">

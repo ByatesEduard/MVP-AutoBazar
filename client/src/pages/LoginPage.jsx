@@ -1,61 +1,175 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkIsAuth, loginUser } from '../redux/features/auth/authSlice'
-import { toast } from'react-toastify'
+import { toast } from 'react-toastify'
+import { FaUser, FaLock, FaEye, FaEyeSlash, FaCar, FaGoogle, FaFacebook } from 'react-icons/fa'
 
 export const LoginPage = () => {
    const [username, setUserName] = useState('')
    const [password, setPassword] = useState('')
+   const [showPassword, setShowPassword] = useState(false)
+   const [isLoading, setIsLoading] = useState(false)
 
-   const {status} = useSelector((state) => state.auth)
+   const { status } = useSelector((state) => state.auth)
    const isAuth = useSelector(checkIsAuth)
    const dispatch = useDispatch()
    const navigate = useNavigate()
 
-   useEffect(() =>{
-     if(status) toast(status)
-     if(isAuth) navigate ('/')
+   useEffect(() => {
+     if (status) toast(status)
+     if (isAuth) navigate('/')
    }, [status, isAuth, navigate])
 
-     const handleSubmit = () => {
-       try {
-         dispatch(loginUser({username, password}))
-       } catch (error) {
-         console.log(error)
-       }
+   const handleSubmit = async (e) => {
+     e.preventDefault()
+     if (!username || !password) {
+       toast.error('Будь ласка, заповніть всі поля')
+       return
      }
 
-  return (
-    <form onSubmit={e => e.preventDefault()} className='w-1/4 h60 mx-auto mt-40'>
-      <h1 className='text-lg text-black text-center '>Авторизация</h1>
-      <label className='text-xs text-gray-400'>
-  Username:
-  <input
-    type="text"
-    placeholder="Username"
-    value={username}
-    onChange={(e) => setUserName(e.target.value)}
-    className="mt-1 text-black w-full rounded-lg bg-gray-400 border-py-1 px-2 text-xs outline-none placeholder:text-gray-700"
-  />
-</label>
+     setIsLoading(true)
+     try {
+       await dispatch(loginUser({ username, password }))
+     } catch (error) {
+       console.log(error)
+       toast.error('Помилка входу')
+     } finally {
+       setIsLoading(false)
+     }
+   }
 
-<label className='text-xs text-gray-400'>
-  Password:
-  <input
-    type="password"
-    placeholder="Password"
-    value={password}
-    onChange={(e) => setPassword(e.target.value)}
-    className="mt-1 text-black w-full rounded-lg bg-gray-400 border-py-2 px-4 text-xs outline-none placeholder:text-gray-700"
-  />
-</label>
+   return (
+     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
+       <div className="max-w-md w-full space-y-8">
+         <div className="text-center">
+           <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mb-6">
+             <FaCar className="text-white text-2xl" />
+           </div>
+           <h2 className="text-3xl font-bold text-gray-900 mb-2">Ласкаво просимо назад</h2>
+           <p className="text-gray-600">Увійдіть до свого облікового запису</p>
+         </div>
 
-      <div className='flex gap-8 justify-center mt-4'>
-        <button type='submit' onClick={handleSubmit} className='flex justify-center items-center text-xs bg-gray-600 text-white rounded-sm py-w px-4'>Войти</button>
-        <Link to='/register' className='flex justify-center items-center text-xs text-black'>Нет аккаунта ?</Link>
-      </div>
+         <div className="card p-8">
+           <form onSubmit={handleSubmit} className="space-y-6">
+             <div>
+               <label className="block text-sm font-medium text-gray-700 mb-2">
+                 Ім'я користувача
+               </label>
+               <div className="relative">
+                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                   <FaUser className="h-5 w-5 text-gray-400" />
+                 </div>
+                 <input
+                   type="text"
+                   placeholder="Введіть ім'я користувача"
+                   value={username}
+                   onChange={(e) => setUserName(e.target.value)}
+                   className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                   required
+                 />
+               </div>
+             </div>
 
-    </form>
-  )
+             <div>
+               <label className="block text-sm font-medium text-gray-700 mb-2">
+                 Пароль
+               </label>
+               <div className="relative">
+                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                   <FaLock className="h-5 w-5 text-gray-400" />
+                 </div>
+                 <input
+                   type={showPassword ? "text" : "password"}
+                   placeholder="Введіть пароль"
+                   value={password}
+                   onChange={(e) => setPassword(e.target.value)}
+                   className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                   required
+                 />
+                 <button
+                   type="button"
+                   onClick={() => setShowPassword(!showPassword)}
+                   className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                 >
+                   {showPassword ? (
+                     <FaEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                   ) : (
+                     <FaEye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                   )}
+                 </button>
+               </div>
+             </div>
+
+             <div className="flex items-center justify-between">
+               <div className="flex items-center">
+                 <input
+                   id="remember-me"
+                   name="remember-me"
+                   type="checkbox"
+                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                 />
+                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                   Запам'ятати мене
+                 </label>
+               </div>
+               <Link to="/forgot-password" className="text-sm text-blue-600 hover:text-blue-500 font-medium">
+                 Забули пароль?
+               </Link>
+             </div>
+
+             <button
+               type="submit"
+               disabled={isLoading}
+               className={`w-full btn-primary ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+             >
+               {isLoading ? (
+                 <div className="flex items-center justify-center">
+                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                   Вхід...
+                 </div>
+               ) : (
+                 'Увійти'
+               )}
+             </button>
+
+             <div className="relative">
+               <div className="absolute inset-0 flex items-center">
+                 <div className="w-full border-t border-gray-300" />
+               </div>
+               <div className="relative flex justify-center text-sm">
+                 <span className="px-2 bg-white text-gray-500">Або увійти через</span>
+               </div>
+             </div>
+
+             <div className="grid grid-cols-2 gap-3">
+               <button
+                 type="button"
+                 className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors duration-200"
+               >
+                 <FaGoogle className="h-5 w-5 text-red-500" />
+                 <span className="ml-2">Google</span>
+               </button>
+               <button
+                 type="button"
+                 className="w-full inline-flex justify-center py-3 px-4 border border-gray-300 rounded-xl shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors duration-200"
+               >
+                 <FaFacebook className="h-5 w-5 text-blue-600" />
+                 <span className="ml-2">Facebook</span>
+               </button>
+             </div>
+           </form>
+
+           <div className="mt-6 text-center">
+             <p className="text-sm text-gray-600">
+               Немає облікового запису?{' '}
+               <Link to="/register" className="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-200">
+                 Зареєструватися
+               </Link>
+             </p>
+           </div>
+         </div>
+       </div>
+     </div>
+   )
 }

@@ -7,7 +7,7 @@ import MainPage from './pages/MainPage.jsx'
 import { PostsPage } from './pages/PostsPage'
 import { PostPage } from './pages/PostPage'
 import { SellPage } from './pages/SellPage.jsx'
-import AddPostPage from './pages/fixed_AddPostPage'
+import { EnhancedPostForm } from './components/EnhancedPostForm'
 import { RegisterPage } from './pages/RegisterPage'
 import { LoginPage } from './pages/LoginPage'
 import { ProfilePage } from './pages/ProfilePage.jsx'
@@ -51,7 +51,7 @@ function App() {
           <Route path="posts" element={<PostsPage />} />
           <Route path="post/:id" element={<PostPage />} />
           <Route path="post/:id/edit" element={<EditPostPage />} />
-          <Route path="new" element={<AddPostPage />} />
+          <Route path="new" element={<EnhancedPostForm />} />
           <Route path="/chat" element={<ChatPostDetails />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />

@@ -3,9 +3,6 @@ import { Link } from 'react-router-dom';
 import { FaPhone, FaMapMarkerAlt, FaClock, FaDirections, FaStar, FaHeart, FaEye, FaCar, FaShieldAlt, FaCheckCircle } from 'react-icons/fa';
 
 const MainPage = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-
   return (
     <div className="min-h-screen">
       {/* Features Section */}

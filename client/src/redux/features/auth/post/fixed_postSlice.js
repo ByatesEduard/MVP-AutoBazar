@@ -2,11 +2,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../../../utils/fixed_axios';
 
 const initialState = {
-  user: null,
   posts: [],
   popularPosts: [],
+  page: 1,
+  pages: 1,
+  hasMore: true,
   loading: false,
-  filterTimeout: null, // Додаємо стан для ID таймера
+  filterTimeout: null,
 };
 
 // Створення нового поста
@@ -28,14 +30,13 @@ export const createPost = createAsyncThunk(
 // Отримання всіх постів (з фільтрацією)
 export const getAllposts = createAsyncThunk(
   'post/getAllPosts',
-  async (filters = {}, { rejectWithValue }) => {
+  async ({ filters = {}, page = 1, limit = 12 }, { rejectWithValue }) => {
     try {
-      console.log('Redux: Making API request with filters:', filters);
-      const { data } = await axios.get('/posts', { params: filters });
-      console.log('Redux: API response:', data);
-      return data;
+      const { data } = await axios.get('/posts', {
+        params: { ...filters, page, limit }
+      });
+      return { ...data, page };
     } catch (error) {
-      console.error('Redux: Error fetching posts:', error.response ? error.response.data : error.message);
       return rejectWithValue(error.response?.data || { message: 'Network error' });
     }
   }
@@ -95,15 +96,18 @@ export const postSlice = createSlice({
       })
       .addCase(getAllposts.fulfilled, (state, action) => {
         state.loading = false;
-        console.log('Redux: getAllposts fulfilled with data:', action.payload);
-        state.posts = action.payload?.posts || [];
-        state.popularPosts = action.payload?.popularPosts || [];
-      })
-      .addCase(getAllposts.rejected, (state, action) => {
-        state.loading = false;
-        console.error('Redux: getAllposts rejected with error:', action.payload);
-        state.posts = [];
-        state.popularPosts = [];
+        const { posts, popularPosts, pagination, page } = action.payload;
+
+        if (page === 1) {
+          state.posts = posts; // перша сторінка — заміняємо
+        } else {
+          state.posts = [...state.posts, ...posts]; // інші сторінки — додаємо
+        }
+
+        state.popularPosts = popularPosts;
+        state.page = page;
+        state.pages = pagination.pages;
+        state.hasMore = pagination.hasMore;
       })
 
       // Видалення поста

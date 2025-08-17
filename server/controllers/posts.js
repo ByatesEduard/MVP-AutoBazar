@@ -92,12 +92,12 @@ export const createPost = async (req, res) => {
   }
 };
 
-// get all posts
+// get all posts with pagination
 export const getAll = async (req, res) => {
   try {
     console.log('📝 GET /posts - Request received');
     console.log('🔍 Query parameters:', req.query);
-    
+
     const {
       priceMin,
       priceMax,
@@ -114,12 +114,14 @@ export const getAll = async (req, res) => {
       condition,
       hasAccident,
       search,
+      page = 1,          // <- default page = 1
+      limit = 10,        // <- default 10 posts per page
     } = req.query;
 
     let filter = {};
     let sort = { createdAt: -1 }; // Default sort by newest
 
-    // Search functionality
+    // 🔎 Search
     if (search) {
       filter.$or = [
         { title: { $regex: search, $options: 'i' } },
@@ -129,28 +131,28 @@ export const getAll = async (req, res) => {
       ];
     }
 
-    // Price filter
+    // 💲 Price filter
     if (priceMin || priceMax) {
       filter.price = {};
       if (priceMin) filter.price.$gte = Number(priceMin);
       if (priceMax) filter.price.$lte = Number(priceMax);
     }
 
-    // Mileage filter
+    // 🛣️ Mileage filter
     if (mileageMin || mileageMax) {
       filter.mileage = {};
       if (mileageMin) filter.mileage.$gte = Number(mileageMin);
       if (mileageMax) filter.mileage.$lte = Number(mileageMax);
     }
 
-    // Year filter
+    // 📅 Year filter
     if (yearMin || yearMax) {
       filter.year = {};
       if (yearMin) filter.year.$gte = Number(yearMin);
       if (yearMax) filter.year.$lte = Number(yearMax);
     }
 
-    // Other filters
+    // ⚙️ Other filters
     if (brand) filter.brand = brand;
     if (fuel) filter.fuel = fuel;
     if (transmission) filter.transmission = transmission;
@@ -158,41 +160,45 @@ export const getAll = async (req, res) => {
     if (condition) filter.condition = condition;
     if (hasAccident !== undefined) filter.hasAccident = hasAccident === 'true';
 
-    // Sorting
+    // 📊 Sorting
     switch (sortBy) {
-      case 'price':
-        sort = { price: sortOrder === 'desc' ? -1 : 1 };
-        break;
-      case 'mileage':
-        sort = { mileage: sortOrder === 'desc' ? -1 : 1 };
-        break;
-      case 'year':
-        sort = { year: sortOrder === 'desc' ? -1 : 1 };
-        break;
-      case 'views':
-        sort = { views: sortOrder === 'desc' ? -1 : 1 };
-        break;
-      case 'createdAt':
-        sort = { createdAt: sortOrder === 'desc' ? -1 : 1 };
-        break;
-      default:
-        sort = { createdAt: -1 };
+      case 'price': sort = { price: sortOrder === 'desc' ? -1 : 1 }; break;
+      case 'mileage': sort = { mileage: sortOrder === 'desc' ? -1 : 1 }; break;
+      case 'year': sort = { year: sortOrder === 'desc' ? -1 : 1 }; break;
+      case 'views': sort = { views: sortOrder === 'desc' ? -1 : 1 }; break;
+      case 'createdAt': sort = { createdAt: sortOrder === 'desc' ? -1 : 1 }; break;
+      default: sort = { createdAt: -1 };
     }
 
-    const posts = await Post.find(filter).sort(sort);
+    // 📌 Pagination logic
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const posts = await Post.find(filter)
+      .sort(sort)
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await Post.countDocuments(filter);
+
     const popularPosts = await Post.find().limit(5).sort('-views');
 
-    console.log('📊 Found posts:', posts.length);
-    console.log('🔥 Popular posts:', popularPosts.length);
-    console.log('🔍 Applied filter:', filter);
-    console.log('📈 Applied sort:', sort);
+    res.json({
+      posts,
+      popularPosts,
+      pagination: {
+        total,
+        page: Number(page),
+        pages: Math.ceil(total / limit),
+        hasMore: skip + posts.length < total,
+      },
+    });
 
-    res.json({ posts, popularPosts });
   } catch (error) {
     console.error('❌ Get all posts error:', error);
     res.status(500).json({ message: 'Щось пішло не так' });
   }
 };
+
 
 // get post by id
 export const getById = async (req, res) => {

@@ -29,18 +29,6 @@ export const PostFilters = ({
   const [sortBy, setSortBy] = useState(initialSortBy);
   const [searchQuery, setSearchQuery] = useState(initialSearchQuery);
 
-  // Обновляем локальное состояние при изменении пропсов
-  useEffect(() => {
-    setFilters(prev => ({ ...prev, ...initialFilters }));
-  }, [initialFilters]);
-
-  useEffect(() => {
-    setSortBy(initialSortBy);
-  }, [initialSortBy]);
-
-  useEffect(() => {
-    setSearchQuery(initialSearchQuery);
-  }, [initialSearchQuery]);
 
   const brands = ['BMW', 'Mercedes', 'Audi', 'Volkswagen', 'Toyota', 'Honda', 'Ford', 'Chevrolet', 'Nissan', 'Hyundai', 'Kia', 'Skoda', 'Volvo', 'Lexus', 'Mazda', 'Subaru', 'Mitsubishi', 'Peugeot', 'Renault', 'Citroen'];
   const fuelTypes = ['gasoline', 'diesel', 'gaz/gasoline', 'electro', 'hybrid'];

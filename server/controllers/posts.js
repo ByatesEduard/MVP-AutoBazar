@@ -115,7 +115,7 @@ export const getAll = async (req, res) => {
       hasAccident,
       search,
       page = 1,          // <- default page = 1
-      limit = 10,        // <- default 10 posts per page
+      limit = 9,        // <- default 10 posts per page
     } = req.query;
 
     let filter = {};

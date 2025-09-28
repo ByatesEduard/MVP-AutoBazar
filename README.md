@@ -3,10 +3,11 @@
 
 Блок-схема №1
 
-<img width="673" height="518" alt="Auto-Bazar drawio" src="https://github.com/user-attachments/assets/8b9fc2b6-2dea-4468-afaf-0267665e3b07" />
+<img width="621" height="911" alt="Auto-Bazar(2) drawio" src="https://github.com/user-attachments/assets/2484c819-98f1-40ae-b098-fbb8f31b7954" />
 
 Блок-схема №2
-<img width="621" height="911" alt="Auto-Bazar(2) drawio" src="https://github.com/user-attachments/assets/2484c819-98f1-40ae-b098-fbb8f31b7954" />
+
+<img width="673" height="518" alt="Auto-Bazar drawio" src="https://github.com/user-attachments/assets/8b9fc2b6-2dea-4468-afaf-0267665e3b07" />
 
 
 ## Опис

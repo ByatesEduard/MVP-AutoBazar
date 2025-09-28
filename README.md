@@ -1,6 +1,9 @@
 
 # Auto-Bazar
 
+Блок-схема 
+<img width="673" height="518" alt="Auto-Bazar drawio" src="https://github.com/user-attachments/assets/8b9fc2b6-2dea-4468-afaf-0267665e3b07" />
+
 
 ## Опис
 
